@@ -1,0 +1,36 @@
+{
+  "name": "rasputin-ts",
+  "version": "1.0.0",
+  "description": "Chatbot com API e Histórico em TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "envalid": "^7.3.1",
+    "express": "^4.21.2",
+    "express-rate-limit": "^6.7.0",
+    "express-session": "^1.18.1",
+    "helmet": "^6.0.0",
+    "joi": "^17.9.2",
+    "mysql2": "^3.14.0",
+    "rasputin-ts": "file:",
+    "sequelize": "^6.37.7",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/express-rate-limit": "^5.1.3",
+    "@types/express-session": "^1.17.6",
+    "@types/joi": "^17.2.3",
+    "@types/node": "^20.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}
