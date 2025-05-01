@@ -1,0 +1,30 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const express_session_1 = __importDefault(require("express-session"));
+const cors_1 = __importDefault(require("cors"));
+const helmet_1 = __importDefault(require("helmet"));
+const env_1 = require("./env");
+const logger_1 = require("./logger");
+const history_1 = __importDefault(require("./routes/history"));
+const chat_1 = __importDefault(require("./routes/chat"));
+const rateLimiter_1 = require("./middleware/rateLimiter");
+const validate_1 = require("./middleware/validate");
+const errorHandler_1 = require("./middleware/errorHandler");
+const database_1 = require("./database");
+const app = (0, express_1.default)();
+app.use((0, helmet_1.default)());
+app.use((0, cors_1.default)({ origin: ['https://seusite.com'], credentials: true }));
+app.use(express_1.default.json());
+app.use((0, express_session_1.default)({ secret: env_1.env.SESSION_SECRET, resave: false, saveUninitialized: true, cookie: { secure: 'auto', httpOnly: true } }));
+app.get('/health', (req, res) => res.json({ uptime: process.uptime() }));
+app.use(rateLimiter_1.apiLimiter);
+app.use('/history', history_1.default);
+app.use('/chat', validate_1.validateChat, chat_1.default);
+app.use(errorHandler_1.errorHandler);
+database_1.sequelize.sync().then(() => {
+    app.listen(env_1.env.PORT, () => logger_1.logger.info(`Server running on http://localhost:${env_1.env.PORT}`));
+});
